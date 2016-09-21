@@ -8,25 +8,20 @@ use UrlShortener\Domain\Value\Url;
 class Url
 {
     /**
-     * @var string|null
+     * @var string
      */
     private $value;
 
     public function __construct($url)
     {
-        static $emptyValues = [null, ''];
+        $parts = parse_url($url);
 
-        if (in_array($url, $emptyValues, true)) {
-            $url = null;
-        } else {
-            $parts = parse_url($url);
-            if (!isset($parts['scheme'])) {
-                throw new InvalidArgumentException('Value must be a URL');
-            }
+        if (!isset($parts['scheme'])) {
+            throw new InvalidArgumentException('Value must be a URL');
+        }
 
-            if (false === filter_var($url, \FILTER_VALIDATE_URL)) {
-                throw new InvalidArgumentException('Value must be a valid URL');
-            }
+        if (filter_var($url, \FILTER_VALIDATE_URL) === false) {
+            throw new InvalidArgumentException('Value must be a valid URL');
         }
 
         $this->value = $url;
