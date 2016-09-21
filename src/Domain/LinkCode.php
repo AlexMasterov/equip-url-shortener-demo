@@ -7,7 +7,7 @@ use Equip\Adr\PayloadInterface;
 use UrlShortener\Domain\AbstractDomain;
 use UrlShortener\Domain\Repository\LinksRepositoryInterface;
 
-class Code extends AbstractDomain
+class LinkCode extends AbstractDomain
 {
     /**
      * @var LinksRepositoryInterface
@@ -24,14 +24,16 @@ class Code extends AbstractDomain
 
     public function __invoke(array $input)
     {
-        $code = $input['code'];
+        $inputCode = $input['linkCode'];
 
-        $link = $this->repository->findByCode($code);
+        $link = $this->repository->findByCode($inputCode);
         if (false === $link) {
-            $message = 'No link exist';
+            $message = 'No link exists';
             return $this->error($input, compact('message'));
         }
 
-        return $this->redirect($link->url());
+        $linkUrl = $link->url();
+
+        return $this->redirect($linkUrl);
     }
 }

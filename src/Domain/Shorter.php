@@ -56,11 +56,11 @@ class Shorter extends AbstractDomain
             $this->repository->add($link);
         }
 
-        $code = $link->code();
+        $linkCode = $link->code();
 
         return $this->payload()
             ->withStatus(PayloadInterface::STATUS_OK)
-            ->withOutput(compact('code'));
+            ->withOutput(compact('linkCode'));
     }
 
     /**

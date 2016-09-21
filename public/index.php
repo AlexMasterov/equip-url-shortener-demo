@@ -24,7 +24,7 @@ Equip\Application::build()
     return $directory
         ->get('/', UrlShortener\Domain\Welcome::class)
         ->post('/', UrlShortener\Domain\Shorter::class)
-        ->get('/{code}', UrlShortener\Domain\Code::class)
+        ->get('/{linkCode}', UrlShortener\Domain\LinkCode::class)
         ->any('/{error404}', UrlShortener\Domain\Welcome::class)
         ; // End of routing
 })
