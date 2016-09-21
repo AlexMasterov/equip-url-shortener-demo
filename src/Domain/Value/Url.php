@@ -10,26 +10,26 @@ class Url
     /**
      * @var string|null
      */
-    private $value;
+    private $url;
 
-    public function __construct($value)
+    public function __construct($url)
     {
         static $emptyValues = [null, ''];
 
-        if (in_array($value, $emptyValues, true)) {
-            $number = null;
+        if (in_array($url, $emptyValues, true)) {
+            $url = null;
         } else {
-            $parts = parse_url($value);
+            $parts = parse_url($url);
             if (!isset($parts['scheme'])) {
                 throw new InvalidArgumentException('Value must be a URL');
             }
 
-            if (false === filter_var($value, \FILTER_VALIDATE_URL)) {
+            if (false === filter_var($url, \FILTER_VALIDATE_URL)) {
                 throw new InvalidArgumentException('Value must be a valid URL');
             }
         }
 
-        $this->value = $value;
+        $this->value = $url;
     }
 
     public function value()
