@@ -24,6 +24,11 @@ class LinkCode extends AbstractDomain
 
     public function __invoke(array $input)
     {
+        if (!$this->hasLinkCode($input)) {
+            $message = 'No link code found';
+            return $this->error($input, compact('message'));
+        }
+
         $inputCode = $input['linkCode'];
 
         $link = $this->repository->findByCode($inputCode);
@@ -35,5 +40,15 @@ class LinkCode extends AbstractDomain
         $linkUrl = $link->url();
 
         return $this->redirect($linkUrl);
+    }
+
+    /**
+     * @param array $input
+     *
+     * @return bool
+     */
+    private function hasLinkCode(array $input)
+    {
+        return !empty($input['linkCode']);
     }
 }
