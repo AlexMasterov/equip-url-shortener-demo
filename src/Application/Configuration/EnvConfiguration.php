@@ -26,9 +26,6 @@ class EnvConfiguration implements ConfigurationInterface
         $this->rootDir = $rootDir;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function apply(Injector $injector)
     {
         $injector->share(Env::class);
@@ -43,17 +40,19 @@ class EnvConfiguration implements ConfigurationInterface
      */
     public function prepareEnv(Env $env)
     {
-        $dir = $this->rootDir;
-        $envFile = $dir . DIRECTORY_SEPARATOR . '.env';
+        $rootDir = $this->rootDir;
+        $envFile = $rootDir . DIRECTORY_SEPARATOR . '.env';
 
         $loader = new Loader($envFile);
+
         $values = $loader
             ->setFilters([
                 [$this, 'rootFilter']
             ])
             ->parse()
             ->filter()
-            ->toArray();
+            ->toArray()
+            ;
 
         return $env->withValues($values);
     }
