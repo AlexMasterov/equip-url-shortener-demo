@@ -11,7 +11,7 @@ use UrlShortener\Domain\Generator\GeneratorInterface;
 use UrlShortener\Domain\Repository\LinksRepositoryInterface;
 use UrlShortener\Domain\Value\Url;
 
-class Shorter extends AbstractDomain
+class LinkShorter extends AbstractDomain
 {
     /**
      * @var LinksRepositoryInterface

@@ -23,7 +23,7 @@ Equip\Application::build()
 ->setRouting(function (Equip\Directory $directory) {
     return $directory
         ->get('/', UrlShortener\Domain\Welcome::class)
-        ->post('/', UrlShortener\Domain\Shorter::class)
+        ->post('/', UrlShortener\Domain\LinkShorter::class)
         ->get('/{linkCode}', UrlShortener\Domain\LinkCode::class)
         ->any('/{error404}', UrlShortener\Domain\Welcome::class)
         ; // End of routing
