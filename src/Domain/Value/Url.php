@@ -10,7 +10,7 @@ class Url
     /**
      * @var string|null
      */
-    private $url;
+    private $value;
 
     public function __construct($url)
     {
