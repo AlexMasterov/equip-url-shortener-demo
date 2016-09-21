@@ -4,8 +4,10 @@ namespace UrlShortener\Domain;
 
 use Equip\Adr\DomainInterface;
 use Equip\Adr\PayloadInterface;
+use InvalidArgumentException;
 use UrlShortener\Domain\AbstractDomain;
 use UrlShortener\Domain\Repository\LinksRepositoryInterface;
+use UrlShortener\Domain\Value\Code;
 
 class LinkCode extends AbstractDomain
 {
@@ -31,7 +33,14 @@ class LinkCode extends AbstractDomain
 
         $inputCode = $input['linkCode'];
 
-        $link = $this->repository->findByCode($inputCode);
+        try {
+            $code = new Code($inputCode);
+        } catch (InvalidArgumentException $e) {
+            $message = $e->getMessage();
+            return $this->error($input, compact('message'));
+        }
+
+        $link = $this->repository->findByCode($code);
         if (false === $link) {
             $message = 'No link exists';
             return $this->error($input, compact('message'));

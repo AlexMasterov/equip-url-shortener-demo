@@ -5,6 +5,7 @@ namespace UrlShortener\Infrastructure\Repository;
 use PDO;
 use UrlShortener\Domain\Entity\Link;
 use UrlShortener\Domain\Repository\LinksRepositoryInterface;
+use UrlShortener\Domain\Value\Code;
 use UrlShortener\Domain\Value\Url;
 
 class PdoLinksRepository implements LinksRepositoryInterface
@@ -48,12 +49,12 @@ class PdoLinksRepository implements LinksRepositoryInterface
         return $found;
     }
 
-    public function findByCode($code)
+    public function findByCode(Code $code)
     {
         $query = 'SELECT * FROM links WHERE code = :code';
 
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue(':code', $code, PDO::PARAM_STR);
+        $stmt->bindValue(':code', $code->value());
         $stmt->execute();
 
         $found = $stmt->fetchObject(Link::class);
