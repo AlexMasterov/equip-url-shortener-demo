@@ -41,19 +41,18 @@ class Shorter extends AbstractDomain
             return $this->error($input, compact('message'));
         }
 
+        $inputUrl = $input['url'];
+
         try {
-            $url = new Url($input['url']);
+            $url = new Url($inputUrl);
         } catch (InvalidArgumentException $e) {
-            $message = 'Bad URL';
+            $message = $e->getMessage();
             return $this->error($input, compact('message'));
         }
 
         $link = $this->repository->findByUrl($url);
         if (!$link) {
-            $link = Link::create(
-                $url,
-                $this->generateCode()
-            );
+            $link = $this->createLink($url);
             $this->repository->add($link);
         }
 
@@ -72,6 +71,18 @@ class Shorter extends AbstractDomain
     private function hasUrl(array $input)
     {
         return !empty($input['url']);
+    }
+
+    /**
+     * @param Url $url
+     *
+     * @return Link
+     */
+    private function createLink(Url $url)
+    {
+        $code = $this->generateCode();
+
+        return Link::create($url, $code);
     }
 
     /**
