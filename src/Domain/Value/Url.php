@@ -17,7 +17,7 @@ class Url
         $parts = parse_url($value);
 
         if (!isset($parts['scheme'])) {
-            throw new InvalidArgumentException('Value must be a URL');
+            throw new InvalidArgumentException('Value must be a valid URL');
         }
 
         if (filter_var($value, \FILTER_VALIDATE_URL) === false) {

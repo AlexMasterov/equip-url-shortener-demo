@@ -3,7 +3,6 @@
 namespace UrlShortener\Tests\Domain;
 
 use Equip\Adr\PayloadInterface;
-use InvalidArgumentException;
 use PHPUnit_Framework_TestCase as TestCase;
 use UrlShortener\Domain\Entity\Link;
 use UrlShortener\Domain\LinkCode;

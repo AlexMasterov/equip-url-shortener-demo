@@ -40,5 +40,4 @@ abstract class AbstractDomain implements DomainInterface
             ->withInput($input)
             ->withOutput($messages);
     }
-
 }
