@@ -11,7 +11,7 @@ class Code
      */
     private $value;
 
-    public function __construct($code)
+    public function __construct($value)
     {
         $options = [
             'options' => [
@@ -19,11 +19,11 @@ class Code
             ]
         ];
 
-        if (filter_var($code, \FILTER_VALIDATE_REGEXP, $options) === false) {
+        if (filter_var($value, \FILTER_VALIDATE_REGEXP, $options) === false) {
             throw new InvalidArgumentException('Value must be a valid link code');
         }
 
-        $this->value = $code;
+        $this->value = $value;
     }
 
     public function value()
