@@ -6,17 +6,29 @@ use UrlShortener\Domain\Generator\GeneratorInterface;
 
 class RandomBytesGenerator implements GeneratorInterface
 {
+    const DEFAULT_LENGTH = 3;
+    const DEFAULT_ENTROPY = 256;
+
     /**
-     * @var integer
+     * @var int
      */
     private $length;
 
     /**
-     * @param integer $length
+     * @var int
      */
-    public function __construct($length)
-    {
+    private $entropy;
+
+    /**
+     * @param int $length
+     * @param int $entropy
+     */
+    public function __construct(
+        $length = self::DEFAULT_LENGTH,
+        $entropy = self::DEFAULT_ENTROPY
+    ) {
         $this->length = $length;
+        $this->entropy = $entropy;
     }
 
     /**
@@ -24,8 +36,9 @@ class RandomBytesGenerator implements GeneratorInterface
      */
     public function __invoke()
     {
-        $bytes = random_bytes($this->length);
+        $bytes = random_bytes($this->entropy);
+        $value = rtrim(strtr(base64_encode($bytes), '+/', '-_'), '=');
 
-        return rtrim(strtr(base64_encode($bytes), '+/', '-_'), '=');
+        return substr($value, 0, $this->length);
     }
 }
