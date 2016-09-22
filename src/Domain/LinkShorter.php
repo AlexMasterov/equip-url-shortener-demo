@@ -4,10 +4,10 @@ namespace UrlShortener\Domain;
 
 use Equip\Adr\DomainInterface;
 use Equip\Adr\PayloadInterface;
-use InvalidArgumentException;
 use UrlShortener\Domain\AbstractDomain;
 use UrlShortener\Domain\Entity\Link;
 use UrlShortener\Domain\Generator\GeneratorInterface;
+use UrlShortener\Domain\Repository\LinksRepositoryException;
 use UrlShortener\Domain\Repository\LinksRepositoryInterface;
 use UrlShortener\Domain\Value\Code;
 use UrlShortener\Domain\Value\Url;
@@ -44,11 +44,11 @@ class LinkShorter extends AbstractDomain
 
         $url = $input['url'];
 
-        $link = $this->repository->findByUrl(
-            new Url($url)
-        );
-
-        if (!$link) {
+        try {
+            $link = $this->repository->findByUrl(
+                new Url($url)
+            );
+        } catch (LinksRepositoryException $e) {
             $code = $this->generator();
             $link = $this->createLink($url, $code);
 

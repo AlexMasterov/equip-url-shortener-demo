@@ -7,6 +7,7 @@ use InvalidArgumentException;
 use PHPUnit_Framework_TestCase as TestCase;
 use UrlShortener\Domain\Entity\Link;
 use UrlShortener\Domain\LinkCode;
+use UrlShortener\Domain\Repository\LinksRepositoryException;
 use UrlShortener\Domain\Repository\LinksRepositoryInterface;
 use UrlShortener\Domain\Value\Code;
 use UrlShortener\Domain\Value\Url;
@@ -58,6 +59,12 @@ class LinkCodeTest extends TestCase
         $status = PayloadInterface::STATUS_OK;
 
         $repository = $this->createMock(LinksRepositoryInterface::class);
+        $repository
+            ->expects($this->any())
+            ->method('findByCode')
+            ->will($this->throwException(
+                LinksRepositoryException::notFound()
+            ));
 
         $linkCode = new LinkCode($repository);
         $payload = $linkCode($input);

@@ -7,6 +7,7 @@ use InvalidArgumentException;
 use PHPUnit_Framework_TestCase as TestCase;
 use UrlShortener\Domain\Generator\GeneratorInterface;
 use UrlShortener\Domain\LinkShorter;
+use UrlShortener\Domain\Repository\LinksRepositoryException;
 use UrlShortener\Domain\Repository\LinksRepositoryInterface;
 
 class LinkShorterTest extends TestCase
@@ -58,6 +59,13 @@ class LinkShorterTest extends TestCase
         $status = PayloadInterface::STATUS_OK;
 
         $repository = $this->createMock(LinksRepositoryInterface::class);
+        $repository
+            ->expects($this->any())
+            ->method('findByUrl')
+            ->will($this->throwException(
+                LinksRepositoryException::notFound()
+            ));
+
         $generator = $this->createMockGeneratorWithValue($output['linkCode']);
 
         $linkShorter = new LinkShorter($repository, $generator);
