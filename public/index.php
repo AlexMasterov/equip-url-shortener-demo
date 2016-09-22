@@ -15,6 +15,7 @@ Equip\Application::build()
 ])
 ->setMiddleware([
     Relay\Middleware\ResponseSender::class,
+    UrlShortener\Application\Handler\ExceptionHandler::class,
     Equip\Handler\DispatchHandler::class,
     Equip\Handler\JsonContentHandler::class,
     Equip\Handler\FormContentHandler::class,
