@@ -4,6 +4,7 @@ namespace UrlShortener\Infrastructure\Repository;
 
 use PDO;
 use UrlShortener\Domain\Entity\Link;
+use UrlShortener\Domain\Repository\LinksRepositoryException;
 use UrlShortener\Domain\Repository\LinksRepositoryInterface;
 use UrlShortener\Domain\Value\Code;
 use UrlShortener\Domain\Value\Url;
@@ -45,6 +46,9 @@ class PdoLinksRepository implements LinksRepositoryInterface
         $stmt->execute();
 
         $found = $stmt->fetchObject(Link::class);
+        if (!$found) {
+            throw LinksRepositoryException::notFound();
+        }
 
         return $found;
     }
@@ -58,6 +62,9 @@ class PdoLinksRepository implements LinksRepositoryInterface
         $stmt->execute();
 
         $found = $stmt->fetchObject(Link::class);
+        if (!$found) {
+            throw LinksRepositoryException::notFound();
+        }
 
         return $found;
     }
