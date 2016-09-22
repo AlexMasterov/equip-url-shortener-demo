@@ -2,6 +2,7 @@
 
 namespace UrlShortener\Tests\Domain;
 
+use DomainException;
 use Equip\Adr\PayloadInterface;
 use InvalidArgumentException;
 use PHPUnit_Framework_TestCase as TestCase;
@@ -16,19 +17,17 @@ class LinkCodeTest extends TestCase
 {
     public function testWithNoLinkCode()
     {
+        $this->setExpectedExceptionRegExp(
+            DomainException::class,
+            '/No link code found/i'
+        );
+
         $input = [];
-        $output = [
-            'message' => 'No link code found'
-        ];
-        $status = PayloadInterface::STATUS_OK;
 
         $repository = $this->createMock(LinksRepositoryInterface::class);
 
         $linkCode = new LinkCode($repository);
-        $payload = $linkCode($input);
-
-        $this->assertEquals($output, $payload->getOutput());
-        $this->assertEquals($status, $payload->getStatus());
+        $linkCode($input);
     }
 
     public function testWithInvalidLinkCode()

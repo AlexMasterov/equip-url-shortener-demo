@@ -2,9 +2,7 @@
 
 namespace UrlShortener\Domain;
 
-use Equip\Adr\DomainInterface;
-use Equip\Adr\PayloadInterface;
-use InvalidArgumentException;
+use DomainException;
 use UrlShortener\Domain\AbstractDomain;
 use UrlShortener\Domain\Repository\LinksRepositoryException;
 use UrlShortener\Domain\Repository\LinksRepositoryInterface;
@@ -28,8 +26,7 @@ class LinkCode extends AbstractDomain
     public function __invoke(array $input)
     {
         if (!$this->hasLinkCode($input)) {
-            $message = 'No link code found';
-            return $this->error($input, compact('message'));
+            throw new DomainException('No link code found');
         }
 
         $linkCode = $input['linkCode'];

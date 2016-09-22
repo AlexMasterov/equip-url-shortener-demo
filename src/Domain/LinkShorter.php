@@ -2,8 +2,7 @@
 
 namespace UrlShortener\Domain;
 
-use Equip\Adr\DomainInterface;
-use Equip\Adr\PayloadInterface;
+use DomainException;
 use UrlShortener\Domain\AbstractDomain;
 use UrlShortener\Domain\Entity\Link;
 use UrlShortener\Domain\Generator\GeneratorInterface;
@@ -38,8 +37,7 @@ class LinkShorter extends AbstractDomain
     public function __invoke(array $input)
     {
         if (!$this->hasUrl($input)) {
-            $message = 'No URL found';
-            return $this->error($input, compact('message'));
+            throw new DomainException('No URL found');
         }
 
         $url = $input['url'];

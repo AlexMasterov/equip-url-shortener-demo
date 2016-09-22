@@ -2,6 +2,7 @@
 
 namespace UrlShortener\Tests\Domain;
 
+use DomainException;
 use Equip\Adr\PayloadInterface;
 use InvalidArgumentException;
 use PHPUnit_Framework_TestCase as TestCase;
@@ -14,20 +15,18 @@ class LinkShorterTest extends TestCase
 {
     public function testWithNoUrl()
     {
+        $this->setExpectedExceptionRegExp(
+            DomainException::class,
+            '/No URL found/i'
+        );
+
         $input = [];
-        $output = [
-            'message' => 'No URL found'
-        ];
-        $status = PayloadInterface::STATUS_OK;
 
         $repository = $this->createMock(LinksRepositoryInterface::class);
         $generator = $this->createMock(GeneratorInterface::class);
 
         $linkShorter = new LinkShorter($repository, $generator);
-        $payload = $linkShorter($input);
-
-        $this->assertEquals($output, $payload->getOutput());
-        $this->assertEquals($status, $payload->getStatus());
+        $linkShorter($input);
     }
 
     public function testWithInvalidUrl()
