@@ -57,9 +57,7 @@ class LinkShorter extends AbstractDomain
 
         $linkCode = $link->code();
 
-        return $this->payload()
-            ->withStatus(PayloadInterface::STATUS_OK)
-            ->withOutput(compact('linkCode'));
+        return $this->render(compact('linkCode'));
     }
 
     /**
