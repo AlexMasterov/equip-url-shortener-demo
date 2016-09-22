@@ -41,7 +41,7 @@ class LinkCode extends AbstractDomain
         }
 
         $link = $this->repository->findByCode($code);
-        if (false === $link) {
+        if (null === $link) {
             $message = 'No link exists';
             return $this->error($input, compact('message'));
         }
