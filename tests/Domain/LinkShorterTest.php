@@ -3,6 +3,7 @@
 namespace UrlShortener\Tests\Domain;
 
 use Equip\Adr\PayloadInterface;
+use InvalidArgumentException;
 use PHPUnit_Framework_TestCase as TestCase;
 use UrlShortener\Domain\Generator\GeneratorInterface;
 use UrlShortener\Domain\LinkShorter;
@@ -30,22 +31,20 @@ class LinkShorterTest extends TestCase
 
     public function testWithInvalidUrl()
     {
+        $this->setExpectedExceptionRegExp(
+            InvalidArgumentException::class,
+            '/Value must be a valid URL/i'
+        );
+
         $input = [
             'url' => 'invalidUrl'
         ];
-        $output = [
-            'message' => 'Value must be a valid URL'
-        ];
-        $status = PayloadInterface::STATUS_OK;
 
         $repository = $this->createMock(LinksRepositoryInterface::class);
         $generator = $this->createMock(GeneratorInterface::class);
 
         $linkShorter = new LinkShorter($repository, $generator);
-        $payload = $linkShorter($input);
-
-        $this->assertEquals($output, $payload->getOutput());
-        $this->assertEquals($status, $payload->getStatus());
+        $linkShorter($input);
     }
 
     public function testThenUrlNotExists()

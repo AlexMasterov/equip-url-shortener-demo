@@ -42,22 +42,15 @@ class LinkShorter extends AbstractDomain
             return $this->error($input, compact('message'));
         }
 
-        $inputUrl = $input['url'];
+        $url = $input['url'];
 
-        try {
-            $url = new Url($inputUrl);
-        } catch (InvalidArgumentException $e) {
-            $message = $e->getMessage();
-            return $this->error($input, compact('message'));
-        }
+        $link = $this->repository->findByUrl(
+            new Url($url)
+        );
 
-        $link = $this->repository->findByUrl($url);
         if (!$link) {
-            $value = $this->generator();
-            $link = Link::create(
-                $url,
-                new Code($value)
-            );
+            $code = $this->generator();
+            $link = $this->createLink($url, $code);
 
             $this->repository->add($link);
         }
@@ -87,5 +80,21 @@ class LinkShorter extends AbstractDomain
         $generator = $this->generator;
 
         return $generator();
+    }
+
+    /**
+     * @param string $url
+     * @param string $code
+     *
+     * @return Link
+     */
+    private function createLink($url, $code)
+    {
+        $link = Link::create(
+            new Url($url),
+            new Code($code)
+        );
+
+        return $link;
     }
 }

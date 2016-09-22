@@ -31,17 +31,13 @@ class LinkCode extends AbstractDomain
             return $this->error($input, compact('message'));
         }
 
-        $inputCode = $input['linkCode'];
+        $linkCode = $input['linkCode'];
 
-        try {
-            $code = new Code($inputCode);
-        } catch (InvalidArgumentException $e) {
-            $message = $e->getMessage();
-            return $this->error($input, compact('message'));
-        }
+        $link = $this->repository->findByCode(
+            new Code($linkCode)
+        );
 
-        $link = $this->repository->findByCode($code);
-        if (null === $link) {
+        if (!$link) {
             $message = 'No link exists';
             return $this->error($input, compact('message'));
         }

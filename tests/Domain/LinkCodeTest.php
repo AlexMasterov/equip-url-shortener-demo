@@ -3,6 +3,7 @@
 namespace UrlShortener\Tests\Domain;
 
 use Equip\Adr\PayloadInterface;
+use InvalidArgumentException;
 use PHPUnit_Framework_TestCase as TestCase;
 use UrlShortener\Domain\Entity\Link;
 use UrlShortener\Domain\LinkCode;
@@ -31,21 +32,19 @@ class LinkCodeTest extends TestCase
 
     public function testWithInvalidLinkCode()
     {
+        $this->setExpectedExceptionRegExp(
+            InvalidArgumentException::class,
+            '/Value must be a valid link code/i'
+        );
+
         $input = [
             'linkCode' => '^'
         ];
-        $output = [
-            'message' => 'Value must be a valid link code'
-        ];
-        $status = PayloadInterface::STATUS_OK;
 
         $repository = $this->createMock(LinksRepositoryInterface::class);
 
         $linkCode = new LinkCode($repository);
-        $payload = $linkCode($input);
-
-        $this->assertEquals($output, $payload->getOutput());
-        $this->assertEquals($status, $payload->getStatus());
+        $linkCode($input);
     }
 
     public function testThenLinkNotExists()
@@ -74,7 +73,9 @@ class LinkCodeTest extends TestCase
         ];
         $status = PayloadInterface::STATUS_PERMANENT_REDIRECT;
 
-        $link = $this->createLink('http://fake.url', $input['linkCode']);
+        $link = $this->createLink('http://link.url', $input['linkCode']);
+        $linkUrl = $link->url();
+
         $repository = $this->createMock(LinksRepositoryInterface::class);
         $repository
             ->expects($this->any())
@@ -84,10 +85,7 @@ class LinkCodeTest extends TestCase
         $linkCode = new LinkCode($repository);
         $payload = $linkCode($input);
 
-        $this->assertEquals(
-            $link->url(),
-            $payload->getSetting('redirect')
-        );
+        $this->assertEquals($linkUrl, $payload->getSetting('redirect'));
         $this->assertEquals($status, $payload->getStatus());
     }
 
