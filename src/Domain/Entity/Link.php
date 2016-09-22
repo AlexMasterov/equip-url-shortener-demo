@@ -3,6 +3,7 @@
 namespace UrlShortener\Domain\Entity;
 
 use UrlShortener\Domain\Value\Url;
+use UrlShortener\Domain\Value\Code;
 
 class Link
 {
@@ -32,13 +33,13 @@ class Link
      *
      * @return self
      */
-    public static function create(Url $url, $code)
+    public static function create(Url $url, Code $code)
     {
         $self = new self();
 
         $self->id = uniqid();
         $self->url = $url->value();
-        $self->code = $code;
+        $self->code = $code->value();
         $self->created_at = date(DATE_ISO8601);
 
         return $self;

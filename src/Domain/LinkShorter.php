@@ -9,6 +9,7 @@ use UrlShortener\Domain\AbstractDomain;
 use UrlShortener\Domain\Entity\Link;
 use UrlShortener\Domain\Generator\GeneratorInterface;
 use UrlShortener\Domain\Repository\LinksRepositoryInterface;
+use UrlShortener\Domain\Value\Code;
 use UrlShortener\Domain\Value\Url;
 
 class LinkShorter extends AbstractDomain
@@ -52,7 +53,12 @@ class LinkShorter extends AbstractDomain
 
         $link = $this->repository->findByUrl($url);
         if (!$link) {
-            $link = $this->createLink($url);
+            $value = $this->generator();
+            $link = Link::create(
+                $url,
+                new Code($value)
+            );
+
             $this->repository->add($link);
         }
 
@@ -74,21 +80,9 @@ class LinkShorter extends AbstractDomain
     }
 
     /**
-     * @param Url $url
-     *
-     * @return Link
-     */
-    private function createLink(Url $url)
-    {
-        $code = $this->generateCode();
-
-        return Link::create($url, $code);
-    }
-
-    /**
      * @return string
      */
-    private function generateCode()
+    private function generator()
     {
         $generator = $this->generator;
 
