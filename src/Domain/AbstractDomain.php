@@ -16,6 +16,18 @@ abstract class AbstractDomain implements DomainInterface
     }
 
     /**
+     * @param array $output
+     *
+     * @return Payload
+     */
+    protected function render(array $output = [])
+    {
+        return $this->payload()
+            ->withStatus(Payload::STATUS_OK)
+            ->withOutput($output);
+    }
+
+    /**
      * @param string $url
      *
      * @return Payload
