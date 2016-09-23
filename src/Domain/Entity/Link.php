@@ -10,7 +10,7 @@ class Link
     /**
      * @var string
      */
-    private $id;
+    private $uid;
 
     /**
      * @var string
@@ -35,14 +35,12 @@ class Link
      */
     public static function create($url, $code)
     {
+        $url = new Url($url);
+        $code = new Code($code);
+
         $self = new self();
 
-        list($url, $code) = [
-            new Url($url),
-            new Code($code)
-        ];
-
-        $self->id = uniqid();
+        $self->uid = uniqid();
         $self->url = $url->value();
         $self->code = $code->value();
         $self->created_at = date(DATE_ISO8601);
@@ -50,9 +48,9 @@ class Link
         return $self;
     }
 
-    public function id()
+    public function uid()
     {
-        return (string) $this->id;
+        return (string) $this->uid;
     }
 
     public function url()

@@ -12,7 +12,7 @@ class UrlTest extends TestCase
     {
         return [
             ['invalidUrl'],
-            ['http:/invalidUrlWithScheme']
+            ['http//invalidUrlWithBadScheme'],
         ];
     }
 

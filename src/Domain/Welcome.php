@@ -2,14 +2,17 @@
 
 namespace UrlShortener\Domain;
 
-use UrlShortener\Domain\AbstractDomain;
+use Equip\Adr\DomainInterface;
+use UrlShortener\Domain\Payload\Render;
 
-class Welcome extends AbstractDomain
+class Welcome implements DomainInterface
 {
+    use Render;
+
     public function __invoke(array $input)
     {
-        $message = 'Soon there will be frontend';
+        $title = 'URL Shortener Demo';
 
-        return $this->render(compact('message'));
+        return $this->render('index', compact('title'));
     }
 }

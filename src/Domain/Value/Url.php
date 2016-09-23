@@ -20,10 +20,6 @@ class Url
             throw new InvalidArgumentException('Value must be a valid URL');
         }
 
-        if (filter_var($value, \FILTER_VALIDATE_URL) === false) {
-            throw new InvalidArgumentException('Value must be a valid URL');
-        }
-
         $this->value = $value;
     }
 

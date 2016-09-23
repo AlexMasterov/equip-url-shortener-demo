@@ -8,14 +8,29 @@ use UrlShortener\Domain\Value\Code;
 
 class CodeTest extends TestCase
 {
-    public function testThenCodeIsInvalid()
+    public function dataInvalidCodes()
+    {
+        return [
+            ['\/'],
+            ['#'],
+            ['%'],
+            ['+'],
+            ['='],
+            ['^'],
+            ['<'],
+            ['>'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataInvalidCodes
+     */
+    public function testThenCodeIsInvalid($value)
     {
         $this->setExpectedExceptionRegExp(
             InvalidArgumentException::class,
-            '/Value must be a valid link code/i'
+            '/Value must be a valid code/i'
         );
-
-        $value = '^';
 
         new Code($value);
     }

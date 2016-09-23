@@ -6,6 +6,8 @@ use InvalidArgumentException;
 
 class Code
 {
+    const VALID_CODE_REGEXP = '/^[?!$&\()*,;a-zA-Z0-9-._~:@]*$/';
+
     /**
      * @var string
      */
@@ -15,12 +17,12 @@ class Code
     {
         $options = [
             'options' => [
-                'regexp' => '/^[?%!$&\'()*+,;=a-zA-Z0-9-._~:@\/]*$/'
+                'regexp' => self::VALID_CODE_REGEXP
             ]
         ];
 
         if (filter_var($value, \FILTER_VALIDATE_REGEXP, $options) === false) {
-            throw new InvalidArgumentException('Value must be a valid link code');
+            throw new InvalidArgumentException('Value must be a valid code');
         }
 
         $this->value = $value;

@@ -11,7 +11,7 @@ Equip\Application::build()
     UrlShortener\Application\Configuration\EnvConfiguration::class,
     UrlShortener\Application\Configuration\GeneratorConfiguration::class,
     UrlShortener\Application\Configuration\PdoSqliteConfiguration::class,
-    UrlShortener\Application\Configuration\LinksRepositoryConfiguration::class,
+    UrlShortener\Application\Configuration\LinkRepositoryConfiguration::class,
 ])
 ->setMiddleware([
     Relay\Middleware\ResponseSender::class,
@@ -24,8 +24,8 @@ Equip\Application::build()
 ->setRouting(function (Equip\Directory $directory) {
     return $directory
         ->get('/', UrlShortener\Domain\Welcome::class)
-        ->post('/', UrlShortener\Domain\LinkShorter::class)
-        ->get('/{linkCode}', UrlShortener\Domain\LinkCode::class)
+        ->post('/', UrlShortener\Domain\Shorter::class)
+        ->get('/{code}', UrlShortener\Domain\Code::class)
         ->any('/{error404}', UrlShortener\Domain\Welcome::class)
         ; // End of routing
 })
