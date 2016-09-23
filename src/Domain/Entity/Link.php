@@ -2,8 +2,8 @@
 
 namespace UrlShortener\Domain\Entity;
 
-use UrlShortener\Domain\Value\Url;
 use UrlShortener\Domain\Value\Code;
+use UrlShortener\Domain\Value\Url;
 
 class Link
 {
@@ -28,14 +28,19 @@ class Link
     private $created_at;
 
     /**
-     * @param Url $url
+     * @param string $url
      * @param string $code
      *
      * @return self
      */
-    public static function create(Url $url, Code $code)
+    public static function create($url, $code)
     {
         $self = new self();
+
+        list($url, $code) = [
+            new Url($url),
+            new Code($code)
+        ];
 
         $self->id = uniqid();
         $self->url = $url->value();
