@@ -19,4 +19,12 @@ class CodeTest extends TestCase
 
         new Code($value);
     }
+
+    public function testThenCodeIsValid()
+    {
+        $value = 'valid';
+        $code = new Code($value);
+
+        $this->assertEquals($value, $code->value());
+    }
 }

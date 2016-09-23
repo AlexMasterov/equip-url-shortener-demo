@@ -8,6 +8,14 @@ use UrlShortener\Domain\Value\Url;
 
 class UrlTest extends TestCase
 {
+    public function dataInvalidUrls()
+    {
+        return [
+            ['invalidUrl'],
+            ['http:/invalidUrlWithScheme']
+        ];
+    }
+
     /**
      * @dataProvider dataInvalidUrls
      */
@@ -21,11 +29,11 @@ class UrlTest extends TestCase
         new Url($value);
     }
 
-    public function dataInvalidUrls()
+    public function testThenUrlIsValid()
     {
-        return [
-            ['invalidUrl'],
-            ['http:/invalidUrlWithScheme']
-        ];
+        $value = 'http://valid.url';
+        $url = new Url($value);
+
+        $this->assertEquals($value, $url->value());
     }
 }
