@@ -65,7 +65,7 @@ class GeneratorConfiguration implements ConfigurationInterface
      */
     private function hasGenerator($name)
     {
-        return !empty($this->generators[$name])
+        return isset($this->generators[$name])
             && is_subclass_of($this->generators[$name], GeneratorInterface::class);
     }
 }
