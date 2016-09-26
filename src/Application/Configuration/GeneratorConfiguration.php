@@ -5,26 +5,67 @@ namespace UrlShortener\Application\Configuration;
 use Auryn\Injector;
 use Equip\Configuration\ConfigurationInterface;
 use Equip\Configuration\EnvTrait;
+use Equip\Env;
 use UrlShortener\Domain\Generator\GeneratorInterface;
+use UrlShortener\Domain\Generator\OpensslRandomBytesGenerator;
 use UrlShortener\Domain\Generator\RandomBytesGenerator;
 
 class GeneratorConfiguration implements ConfigurationInterface
 {
     use EnvTrait;
 
+    /**
+     * @var array
+     */
+    private $generators = [
+        'random_bytes'         => RandomBytesGenerator::class,
+        'openssl_random_bytes' => OpensslRandomBytesGenerator::class,
+    ];
+
     public function apply(Injector $injector)
     {
         $env = $this->env;
 
-        $length = $env->getValue('SHORT_URL_LENGTH', 3);
+        $generator = $this->generator($env);
 
-        $injector->define(RandomBytesGenerator::class, [
+        $entropy = $env->getValue('SHORT_URL_GENERATOR_ENTROPY', $generator::ENTROPY);
+        $length = $env->getValue('SHORT_URL_GENERATOR_LENGTH', $generator::LENGTH);
+
+        $injector->define($generator, [
+            ':entropy' => $entropy,
             ':length' => $length
         ]);
 
         $injector->alias(
             GeneratorInterface::class,
-            RandomBytesGenerator::class
+            $generator
         );
+    }
+
+    /**
+     * @param Env $env
+     *
+     * @return string
+     */
+    private function generator(Env $env)
+    {
+        $generator = $env->getValue('SHORT_URL_GENERATOR', 'random_bytes');
+
+        if ($this->hasGenerator($generator)) {
+            return $this->generators[$generator];
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    private function hasGenerator($name)
+    {
+        return !empty($this->generators[$name])
+            && is_subclass_of($this->generators[$name], GeneratorInterface::class);
     }
 }
