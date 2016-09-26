@@ -21,6 +21,8 @@ class TwigConfiguration implements ConfigurationInterface
     /**
      * @param Twig_Environment $twig
      * @param Injector $injector
+     *
+     * @return Twig_Environment
      */
     public function prepareTwig(
         Twig_Environment $twig,
@@ -39,6 +41,8 @@ class TwigConfiguration implements ConfigurationInterface
 
     /**
      * @param Env $env
+     *
+     * @return object
      */
     private function assets(Env $env)
     {
