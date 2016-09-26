@@ -1,0 +1,8 @@
+.git/
+dist/
+build/
+node_modules/
+
+.cache
+*.log
+.agignore

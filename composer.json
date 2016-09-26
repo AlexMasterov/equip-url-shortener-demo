@@ -1,6 +1,7 @@
 {
   "name": "alexmasterov/url-shortener-demo",
   "description": "Demo of URL Shortener Service",
+  "license": "MIT",
   "require": {
     "php": "^5.5.9 || ^7.0",
     "ext-pdo": "*",
