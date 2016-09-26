@@ -1,8 +1,8 @@
 const path = require('path');
+const processCwd = process.cwd();
 
 function rootDir(...dirs) {
-  const rootDir = process.cwd();
-  return path.join(rootDir, ...dirs);
+  return path.join(processCwd, ...dirs);
 }
 
 module.exports = {
