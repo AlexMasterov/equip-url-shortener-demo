@@ -40,7 +40,7 @@ class TwigConfiguration implements ConfigurationInterface
     /**
      * @param Env $env
      */
-    public function assets(Env $env)
+    private function assets(Env $env)
     {
         $assetsPath = $env->getValue('TWIG_ASSETS_PATH', 'assets.json');
         $assets = json_decode(

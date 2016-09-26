@@ -40,10 +40,7 @@ class EnvConfiguration implements ConfigurationInterface
      */
     public function prepareEnv(Env $env)
     {
-        $rootDir = $this->rootDir;
-        $envFile = $rootDir . DIRECTORY_SEPARATOR . '.env';
-
-        $loader = new Loader($envFile);
+        $loader = $this->loader();
 
         $values = $loader
             ->setFilters([
@@ -55,6 +52,17 @@ class EnvConfiguration implements ConfigurationInterface
             ;
 
         return $env->withValues($values);
+    }
+
+    /**
+     * @return Loader
+     */
+    private function loader()
+    {
+        $rootDir = $this->rootDir;
+        $envFile = $rootDir . DIRECTORY_SEPARATOR . '.env';
+
+        return new Loader($envFile);
     }
 
     /**

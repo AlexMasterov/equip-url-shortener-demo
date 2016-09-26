@@ -19,7 +19,7 @@ class PdoSqliteConfiguration implements ConfigurationInterface
         list($database, $options) = $this->configFromEnv($env);
 
         $injector->define(PDO::class, [
-            ':dsn'     => "sqlite:${database}",
+            ':dsn'     => "sqlite:{$database}",
             ':options' => $options,
         ]);
     }
