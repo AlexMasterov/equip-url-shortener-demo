@@ -4,7 +4,7 @@ namespace UrlShortener\Domain\Generator;
 
 use UrlShortener\Domain\Generator\GeneratorInterface;
 
-class RandomBytesGenerator implements GeneratorInterface
+final class RandomBytesGenerator implements GeneratorInterface
 {
     const ENTROPY = 64;
     const LENGTH = 3;

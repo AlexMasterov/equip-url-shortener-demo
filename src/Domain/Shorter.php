@@ -11,7 +11,7 @@ use UrlShortener\Domain\Payload\Render;
 use UrlShortener\Domain\Repository\LinkRepositoryException;
 use UrlShortener\Domain\Repository\LinkRepositoryInterface;
 
-class Shorter implements DomainInterface
+final class Shorter implements DomainInterface
 {
     use NotFound;
     use Render;

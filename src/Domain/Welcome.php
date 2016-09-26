@@ -5,7 +5,7 @@ namespace UrlShortener\Domain;
 use Equip\Adr\DomainInterface;
 use UrlShortener\Domain\Payload\Render;
 
-class Welcome implements DomainInterface
+final class Welcome implements DomainInterface
 {
     use Render;
 

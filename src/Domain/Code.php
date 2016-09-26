@@ -9,7 +9,7 @@ use UrlShortener\Domain\Payload\Redirect;
 use UrlShortener\Domain\Repository\LinkRepositoryException;
 use UrlShortener\Domain\Repository\LinkRepositoryInterface;
 
-class Code implements DomainInterface
+final class Code implements DomainInterface
 {
     use NotFound;
     use Redirect;
