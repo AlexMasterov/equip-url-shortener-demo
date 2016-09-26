@@ -23,6 +23,8 @@
     }
   },
   "scripts": {
-    "serve": "php -S 0.0.0.0:8080 -t public/"
+    "serve": "php -S 0.0.0.0:8080 -t public/",
+    "sqlite": "php bin/sqlite",
+    "ui": "cd ui && npm i && npm run build"
   }
 }
