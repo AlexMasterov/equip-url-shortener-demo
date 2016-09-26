@@ -1,7 +1,9 @@
 ## URL Shortener Demo
 
-[![Build Status](https://travis-ci.org/AlexMasterov/url-shortener-demo.svg)](https://travis-ci.org/AlexMasterov/equip-url-shortener-demo)
+[![Build Status](https://travis-ci.org/AlexMasterov/url-shortener-demo.svg)](https://travis-ci.org/AlexMasterov/url-shortener-demo)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/AlexMasterov/url-shortener-demo/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/AlexMasterov/url-shortener-demo/?branch=master)
+
+![UrlShortener](https://raw.githubusercontent.com/AlexMasterov/url-shortener-demo/master/url-shortener.png)
 
 ## Requirements
 To run this application, you will need:
