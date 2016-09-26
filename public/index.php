@@ -8,10 +8,7 @@ Equip\Application::build()
     Equip\Configuration\DiactorosConfiguration::class,
     Equip\Configuration\PayloadConfiguration::class,
     Equip\Configuration\RelayConfiguration::class,
-    UrlShortener\Application\Configuration\EnvConfiguration::class,
-    UrlShortener\Application\Configuration\GeneratorConfiguration::class,
-    UrlShortener\Application\Configuration\PdoSqliteConfiguration::class,
-    UrlShortener\Application\Configuration\LinkRepositoryConfiguration::class,
+    UrlShortener\Application\Configuration\UrlShortenerConfigurationSet::class,
 ])
 ->setMiddleware([
     Relay\Middleware\ResponseSender::class,
@@ -25,7 +22,7 @@ Equip\Application::build()
     return $directory
         ->get('/', UrlShortener\Domain\Welcome::class)
         ->post('/', UrlShortener\Domain\Shorter::class)
-        ->get('/{code}', UrlShortener\Domain\Code::class)
+        ->get('/{code:.+}', UrlShortener\Domain\Code::class)
         ->any('/{error404}', UrlShortener\Domain\Welcome::class)
         ; // End of routing
 })

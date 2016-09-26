@@ -1,0 +1,10 @@
+{% extends 'layout' %}
+
+{% block title %}{% endblock title %}
+
+{% block body %}
+<div id="root"></div>
+{% if assets.bundle.js is defined %}
+  <script src="{{ assets.bundle.js }}"></script>
+{% endif %}
+{% endblock body %}

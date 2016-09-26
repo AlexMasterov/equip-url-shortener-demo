@@ -17,7 +17,7 @@ class ExceptionHandler
 
     const MINIMUM_HTTP_CODE = 100;
     const MAXIMUM_HTTP_CODE = 599;
-    const MISSING_HTTP_CODE = 500;
+    const MISSING_HTTP_CODE = 200;
 
     /**
      * @var integer
@@ -75,13 +75,13 @@ class ExceptionHandler
     ) {
         $exceptionCode = $exception->getCode();
 
-        $code = filter_var($exceptionCode, FILTER_VALIDATE_INT, [
-            'options' => [
-                'default'   => $this->missingHttpCode,
-                'min_range' => self::MINIMUM_HTTP_CODE,
-                'max_range' => self::MAXIMUM_HTTP_CODE,
-            ]
-        ]);
+        $options = [
+            'default'   => $this->missingHttpCode,
+            'min_range' => self::MINIMUM_HTTP_CODE,
+            'max_range' => self::MAXIMUM_HTTP_CODE,
+        ];
+
+        $code = filter_var($exceptionCode, FILTER_VALIDATE_INT, compact('options'));
 
         return $response->withStatus($code);
     }
@@ -115,9 +115,13 @@ class ExceptionHandler
      */
     private function payload($exception)
     {
-        $payload = $this->resolve(Payload::class);
         $message = $exception->getMessage();
 
-        return $payload->withOutput(compact('message'));
+        $payload = $this->resolve(Payload::class);
+        $payload = $payload
+            ->withSetting('template', 'exception')
+            ->withOutput(compact('message'));
+
+        return $payload;
     }
 }

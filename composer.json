@@ -1,5 +1,5 @@
 {
-  "name": "AlexMasterov/equip-url-shortener-demo",
+  "name": "alexmasterov/url-shortener-demo",
   "description": "Demo of URL Shortener Service",
   "require": {
     "php": "^5.5.9 || ^7.0",
@@ -8,7 +8,9 @@
     "equip/framework": "dev-master as 2.0",
     "zendframework/zend-diactoros": "^1.3",
     "josegonzalez/dotenv": "^2.0",
-    "paragonie/random_compat": "^2.0"
+    "paragonie/random_compat": "^2.0",
+    "alexmasterov/equip-twig": "^2.0",
+    "alexmasterov/twig-extension": "^0"
   },
   "autoload": {
     "psr-4": {
