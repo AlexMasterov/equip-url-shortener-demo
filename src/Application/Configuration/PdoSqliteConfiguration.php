@@ -40,7 +40,7 @@ class PdoSqliteConfiguration implements ConfigurationInterface
         ];
 
         if ($this->isMemory($database)) {
-            $database = ":${database}:";
+            $database = ":{$database}:";
             $options += [PDO::ATTR_PERSISTENT => true];
         }
 
