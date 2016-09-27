@@ -12,7 +12,7 @@ module.exports = (config) => {
       test: /\.js$/,
       include: paths.source,
       loaders: 'babel',
-      query: require('../babel.js')
+      query: require('./babel-preset.js')
     }
   ];
 

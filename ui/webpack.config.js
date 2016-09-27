@@ -43,7 +43,7 @@ config = require('./webpack/plugins/uglify')(config);
 config = require('./webpack/plugins/postcss')(config);
 
 // Modules
-config = require('./webpack/modules/babel')(config);
+config = require('./webpack/modules/babel-js')(config);
 config = require('./webpack/modules/sugar-css')(config);
 
 module.exports = config;

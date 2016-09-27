@@ -38,7 +38,7 @@ class UrlShorter extends Component {
   }
 
   handleClick() {
-    const value = this.refs.url.input.value;
+    const value = this.url.input.value;
     if (!this.hasValue(value)) {
       return;
     }
@@ -65,7 +65,7 @@ class UrlShorter extends Component {
       <MuiThemeProvider muiTheme={lightMuiTheme}>
         <Paper zDepth={1}>
           <TextField
-            ref='url'
+            ref={(ref) => { this.url = ref; }}
             hintText='Your URL here'
             underlineShow={false}
             fullWidth={true}
