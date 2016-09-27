@@ -12,6 +12,9 @@ class Url
      */
     private $value;
 
+    /**
+     * @param string $value
+     */
     public function __construct($value)
     {
         $parts = parse_url($value);
@@ -24,6 +27,11 @@ class Url
     }
 
     public function value()
+    {
+        return $this->value;
+    }
+
+    public function __toString()
     {
         return $this->value;
     }

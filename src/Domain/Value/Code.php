@@ -13,15 +13,16 @@ class Code
      */
     private $value;
 
+    /**
+     * @param string $value
+     */
     public function __construct($value)
     {
         $options = [
-            'options' => [
-                'regexp' => self::VALID_CODE_REGEXP
-            ]
+            'regexp' => self::VALID_CODE_REGEXP
         ];
 
-        if (filter_var($value, \FILTER_VALIDATE_REGEXP, $options) === false) {
+        if (filter_var($value, \FILTER_VALIDATE_REGEXP, compact('options')) === false) {
             throw new InvalidArgumentException('Value must be a valid code');
         }
 
@@ -29,6 +30,11 @@ class Code
     }
 
     public function value()
+    {
+        return $this->value;
+    }
+
+    public function __toString()
     {
         return $this->value;
     }
