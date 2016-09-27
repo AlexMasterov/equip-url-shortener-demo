@@ -1,10 +1,10 @@
 <?php
 
-namespace UrlShortener\Domain\Generator;
+namespace UrlShortener\Infrastructure\Generator;
 
 use UrlShortener\Domain\Generator\GeneratorInterface;
 
-final class OpensslRandomBytesGenerator implements GeneratorInterface
+final class RandomBytesGenerator implements GeneratorInterface
 {
     const ENTROPY = 64;
     const LENGTH = 3;
@@ -36,7 +36,7 @@ final class OpensslRandomBytesGenerator implements GeneratorInterface
      */
     public function __invoke()
     {
-        $bytes = openssl_random_pseudo_bytes($this->entropy);
+        $bytes = random_bytes($this->entropy);
         $value = rtrim(strtr(base64_encode($bytes), '+/', '-_'), '=');
 
         return substr($value, 0, $this->length);

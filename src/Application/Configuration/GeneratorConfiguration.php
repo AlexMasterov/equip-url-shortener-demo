@@ -7,8 +7,8 @@ use Equip\Configuration\ConfigurationInterface;
 use Equip\Configuration\EnvTrait;
 use Equip\Env;
 use UrlShortener\Domain\Generator\GeneratorInterface;
-use UrlShortener\Domain\Generator\OpensslRandomBytesGenerator;
-use UrlShortener\Domain\Generator\RandomBytesGenerator;
+use UrlShortener\Infrastructure\Generator\OpensslRandomBytesGenerator;
+use UrlShortener\Infrastructure\Generator\RandomBytesGenerator;
 
 class GeneratorConfiguration implements ConfigurationInterface
 {
