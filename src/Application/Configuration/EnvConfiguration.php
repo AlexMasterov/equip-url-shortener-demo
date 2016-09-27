@@ -74,7 +74,7 @@ class EnvConfiguration implements ConfigurationInterface
     {
         $rootDir = $this->rootDir;
 
-        foreach($data as $key => $value) {
+        foreach ($data as $key => $value) {
             $data[$key] = str_replace('__ROOT__', $rootDir, $value);
         }
 
