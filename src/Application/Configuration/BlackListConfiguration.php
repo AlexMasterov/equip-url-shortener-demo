@@ -16,6 +16,7 @@ class BlackListConfiguration implements ConfigurationInterface
     public function apply(Injector $injector)
     {
         $env = $this->env;
+
         $blackList = $this->blackList($env);
 
         $key = array_search('self', $blackList);
@@ -35,11 +36,8 @@ class BlackListConfiguration implements ConfigurationInterface
      */
     public function blackList(Env $env)
     {
-        $blackList = $env->getValue('SHORT_URL_BLACKLIST', 'self');
-        $blackList = array_map(
-            'trim',
-            explode(',', (string) $blackList)
-        );
+        $blackList = $env->getValue('SHORT_URL_BLACKLIST_HOSTS', 'self');
+        $blackList = array_map('trim', explode(',', $blackList));
 
         return $blackList;
     }
