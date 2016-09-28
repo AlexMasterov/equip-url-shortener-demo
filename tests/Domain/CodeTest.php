@@ -2,21 +2,21 @@
 
 namespace UrlShortener\Tests\Domain;
 
-use DomainException;
 use Equip\Adr\PayloadInterface;
 use PHPUnit_Framework_TestCase as TestCase;
+use RuntimeException;
 use UrlShortener\Domain\Code;
 use UrlShortener\Domain\Factory\LinkFactory;
+use UrlShortener\Domain\Generator\GeneratorInterface;
 use UrlShortener\Domain\Repository\LinkRepositoryException;
 use UrlShortener\Domain\Repository\LinkRepositoryInterface;
-use UrlShortener\Domain\Generator\GeneratorInterface;
 
 class CodeTest extends TestCase
 {
     public function testThenCodeIsMissing()
     {
         $this->setExpectedExceptionRegExp(
-            DomainException::class,
+            RuntimeException::class,
             '/The code is missing/i'
         );
 

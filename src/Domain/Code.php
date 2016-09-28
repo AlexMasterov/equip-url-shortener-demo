@@ -2,8 +2,8 @@
 
 namespace UrlShortener\Domain;
 
-use DomainException;
 use Equip\Adr\DomainInterface;
+use RuntimeException;
 use UrlShortener\Domain\Payload\NotFound;
 use UrlShortener\Domain\Payload\Redirect;
 use UrlShortener\Domain\Repository\LinkRepositoryException;
@@ -30,7 +30,7 @@ final class Code implements DomainInterface
     public function __invoke(array $input)
     {
         if (!$this->hasCode($input)) {
-            throw new DomainException('The code is missing');
+            throw new RuntimeException('The code is missing');
         }
 
         $code = $input['code'];

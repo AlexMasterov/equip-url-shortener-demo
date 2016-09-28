@@ -2,8 +2,8 @@
 
 namespace UrlShortener\Domain;
 
-use DomainException;
 use Equip\Adr\DomainInterface;
+use RuntimeException;
 use UrlShortener\Domain\Payload\Render;
 use UrlShortener\Domain\Service\CreateLinkService;
 
@@ -27,7 +27,7 @@ final class Shorter implements DomainInterface
     public function __invoke(array $input)
     {
         if (!$this->hasUrl($input)) {
-            throw new DomainException('The URL is missing');
+            throw new RuntimeException('The URL is missing');
         }
 
         $link = $this->createLink(

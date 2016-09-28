@@ -2,9 +2,9 @@
 
 namespace UrlShortener\Tests\Domain;
 
-use DomainException;
 use Equip\Adr\PayloadInterface;
 use PHPUnit_Framework_TestCase as TestCase;
+use RuntimeException;
 use UrlShortener\Domain\Factory\LinkFactory;
 use UrlShortener\Domain\Repository\LinkRepositoryException;
 use UrlShortener\Domain\Repository\LinkRepositoryInterface;
@@ -19,7 +19,7 @@ class ShorterTest extends TestCase
     public function testThenUrlIsMissing()
     {
         $this->setExpectedExceptionRegExp(
-            DomainException::class,
+            RuntimeException::class,
             '/The URL is missing/i'
         );
 
