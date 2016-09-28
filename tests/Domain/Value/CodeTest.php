@@ -41,5 +41,6 @@ class CodeTest extends TestCase
         $code = new Code($value);
 
         $this->assertEquals($value, $code->value());
+        $this->assertEquals($value, (string) $code);
     }
 }

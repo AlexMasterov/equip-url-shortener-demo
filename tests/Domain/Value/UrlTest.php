@@ -35,5 +35,6 @@ class UrlTest extends TestCase
         $url = new Url($value);
 
         $this->assertEquals($value, $url->value());
+        $this->assertEquals($value, (string) $url);
     }
 }

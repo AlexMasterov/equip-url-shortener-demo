@@ -5,13 +5,17 @@ namespace UrlShortener\Tests\Domain;
 use DomainException;
 use Equip\Adr\PayloadInterface;
 use PHPUnit_Framework_TestCase as TestCase;
-use UrlShortener\Domain\Generator\GeneratorInterface;
+use UrlShortener\Domain\Factory\LinkFactory;
 use UrlShortener\Domain\Repository\LinkRepositoryException;
 use UrlShortener\Domain\Repository\LinkRepositoryInterface;
+use UrlShortener\Domain\Service\CreateLinkService;
 use UrlShortener\Domain\Shorter;
+use UrlShortener\Tests\Domain\Generator\MockGeneratorTrait;
 
 class ShorterTest extends TestCase
 {
+    use MockGeneratorTrait;
+
     public function testThenUrlIsMissing()
     {
         $this->setExpectedExceptionRegExp(
@@ -21,22 +25,23 @@ class ShorterTest extends TestCase
 
         $input = [];
 
-        $repository = $this->createMock(LinkRepositoryInterface::class);
-        $generator = $this->createMock(GeneratorInterface::class);
+        $generator = $this->createMockGenerator('123');
+        $factory = new LinkFactory($generator);
 
-        $shorter = new Shorter($repository, $generator);
+        $repository = $this->createMock(LinkRepositoryInterface::class);
+        $service = new CreateLinkService($factory, $repository);
+
+        $shorter = new Shorter($service);
         $shorter($input);
     }
 
-    public function testThenLinkNotFoundByUrl()
+    public function testThenUrlIsValid()
     {
-        $input = [
-            'url' => 'http://fake.url'
-        ];
-        $output = [
-            'code' => 'querty'
-        ];
-        $status = PayloadInterface::STATUS_OK;
+        $input = ['url' => 'http://valid.url'];
+        $code = 'querty';
+
+        $generator = $this->createMockGenerator($code);
+        $factory = new LinkFactory($generator);
 
         $repository = $this->createMock(LinkRepositoryInterface::class);
         $repository
@@ -46,23 +51,15 @@ class ShorterTest extends TestCase
                 LinkRepositoryException::notFound()
             ));
 
-        $generator = $this->createMockGeneratorWithValue($output['code']);
+        $service = new CreateLinkService($factory, $repository);
 
-        $shorter = new Shorter($repository, $generator);
+        $shorter = new Shorter($service);
         $payload = $shorter($input);
 
-        $this->assertEquals($output, $payload->getOutput());
-        $this->assertEquals($status, $payload->getStatus());
-    }
-
-    protected function createMockGeneratorWithValue($value)
-    {
-        $generator = $this->createMock(GeneratorInterface::class);
-        $generator
-            ->expects($this->any())
-            ->method('__invoke')
-            ->willReturn($value);
-
-        return $generator;
+        $this->assertEquals(compact('code'), $payload->getOutput());
+        $this->assertEquals(
+            PayloadInterface::STATUS_OK,
+            $payload->getStatus()
+        );
     }
 }

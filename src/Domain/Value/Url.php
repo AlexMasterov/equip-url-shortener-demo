@@ -17,9 +17,9 @@ class Url
      */
     public function __construct($value)
     {
-        $parts = parse_url($value);
+        $scheme = parse_url($value, PHP_URL_SCHEME);
 
-        if (!isset($parts['scheme'])) {
+        if (!isset($scheme)) {
             throw new InvalidArgumentException('Value must be a valid URL');
         }
 
@@ -31,8 +31,15 @@ class Url
         return $this->value;
     }
 
+    public function host()
+    {
+        $host = parse_url($this->value, PHP_URL_HOST);
+
+        return $host;
+    }
+
     public function __toString()
     {
-        return $this->value;
+        return (string) $this->value;
     }
 }
