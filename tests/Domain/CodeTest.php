@@ -6,9 +6,10 @@ use DomainException;
 use Equip\Adr\PayloadInterface;
 use PHPUnit_Framework_TestCase as TestCase;
 use UrlShortener\Domain\Code;
-use UrlShortener\Domain\Entity\Link;
+use UrlShortener\Domain\Factory\LinkFactory;
 use UrlShortener\Domain\Repository\LinkRepositoryException;
 use UrlShortener\Domain\Repository\LinkRepositoryInterface;
+use UrlShortener\Domain\Generator\GeneratorInterface;
 
 class CodeTest extends TestCase
 {
@@ -60,7 +61,15 @@ class CodeTest extends TestCase
 
         $status = PayloadInterface::STATUS_PERMANENT_REDIRECT;
 
-        $link = Link::create('http://link.url', $input['code']);
+        $generator = $this->createMock(GeneratorInterface::class);
+        $generator
+            ->expects($this->any())
+            ->method('__invoke')
+            ->willReturn('querty');
+
+        $factory = new LinkFactory($generator);
+
+        $link = $factory->create('http://link.url');
         $url = $link->url();
 
         $repository = $this->createMock(LinkRepositoryInterface::class);

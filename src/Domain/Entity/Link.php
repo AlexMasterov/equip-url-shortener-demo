@@ -13,12 +13,12 @@ class Link
     private $uid;
 
     /**
-     * @var string
+     * @var Url
      */
     private $url;
 
     /**
-     * @var string
+     * @var Code
      */
     private $code;
 
@@ -28,21 +28,18 @@ class Link
     private $created_at;
 
     /**
-     * @param string $url
-     * @param string $code
+     * @param Url $url
+     * @param Code $code
      *
      * @return self
      */
-    public static function create($url, $code)
+    public static function create(Url $url, Code $code)
     {
-        $url = new Url($url);
-        $code = new Code($code);
-
         $self = new self();
 
         $self->uid = uniqid();
-        $self->url = $url->value();
-        $self->code = $code->value();
+        $self->url = (string) $url;
+        $self->code = (string) $code;
         $self->created_at = date(DATE_ISO8601);
 
         return $self;

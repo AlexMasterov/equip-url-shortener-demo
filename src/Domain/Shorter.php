@@ -4,37 +4,24 @@ namespace UrlShortener\Domain;
 
 use DomainException;
 use Equip\Adr\DomainInterface;
-use UrlShortener\Domain\Entity\Link;
-use UrlShortener\Domain\Generator\GeneratorInterface;
-use UrlShortener\Domain\Payload\NotFound;
 use UrlShortener\Domain\Payload\Render;
-use UrlShortener\Domain\Repository\LinkRepositoryException;
-use UrlShortener\Domain\Repository\LinkRepositoryInterface;
+use UrlShortener\Domain\Service\CreateLinkService;
 
 final class Shorter implements DomainInterface
 {
-    use NotFound;
     use Render;
 
     /**
-     * @var LinkRepositoryInterface
+     * @var CreateLinkService
      */
-    private $repository;
+    private $service;
 
     /**
-     * @var GeneratorInterface
+     * @param CreateLinkService $service
      */
-    private $generator;
-
-    /**
-     * @param LinkRepositoryInterface $repository
-     */
-    public function __construct(
-        LinkRepositoryInterface $repository,
-        GeneratorInterface $generator
-    ) {
-        $this->repository = $repository;
-        $this->generator = $generator;
+    public function __construct(CreateLinkService $service)
+    {
+        $this->service = $service;
     }
 
     public function __invoke(array $input)
@@ -43,16 +30,9 @@ final class Shorter implements DomainInterface
             throw new DomainException('The URL is missing');
         }
 
-        $url = $input['url'];
-
-        try {
-            $link = $this->repository->findByUrl($url);
-        } catch (LinkRepositoryException $e) {
-            $code = $this->generateCode();
-            $link = Link::create($url, $code);
-
-            $this->repository->add($link);
-        }
+        $link = $this->createLink(
+            $input['url']
+        );
 
         $code = $link->code();
 
@@ -70,12 +50,14 @@ final class Shorter implements DomainInterface
     }
 
     /**
-     * @return string
+     * @param string $url
+     *
+     * @return Link
      */
-    private function generateCode()
+    private function createLink($url)
     {
-        $generator = $this->generator;
+        $service = $this->service;
 
-        return $generator();
+        return $service($url);
     }
 }
