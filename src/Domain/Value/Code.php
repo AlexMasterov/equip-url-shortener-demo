@@ -6,7 +6,7 @@ use InvalidArgumentException;
 
 class Code
 {
-    const VALID_CODE_REGEXP = '/^[?!$&\()*,;a-zA-Z0-9-._~:@]*$/';
+    const VALID_PATTERN = '/^[?!$&\()*,;a-zA-Z0-9-._~:@]*$/';
 
     /**
      * @var string
@@ -19,7 +19,7 @@ class Code
     public function __construct($value)
     {
         $options = [
-            'regexp' => self::VALID_CODE_REGEXP
+            'regexp' => self::VALID_PATTERN
         ];
 
         if (filter_var($value, \FILTER_VALIDATE_REGEXP, compact('options')) === false) {

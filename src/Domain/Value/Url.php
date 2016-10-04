@@ -26,16 +26,16 @@ class Url
         $this->value = $value;
     }
 
-    public function value()
-    {
-        return $this->value;
-    }
-
     public function host()
     {
         $host = parse_url($this->value, PHP_URL_HOST);
 
         return $host;
+    }
+
+    public function value()
+    {
+        return $this->value;
     }
 
     public function __toString()
