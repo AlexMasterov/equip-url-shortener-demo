@@ -19,7 +19,7 @@ interface LinkRepositoryInterface
      * @return Link
      *
      * @throws LinksRepositoryException
-     *  If a link was not found by the $url.
+     *  If a link was not found by the url.
      */
     public function findByUrl($url);
 
@@ -29,7 +29,7 @@ interface LinkRepositoryInterface
      * @return Link
      *
      * @throws LinksRepositoryException
-     *  If a link was not found by the $code.
+     *  If a link was not found by the code.
      */
     public function findByCode($code);
 }

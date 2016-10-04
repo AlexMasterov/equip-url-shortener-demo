@@ -6,6 +6,7 @@ use PDO;
 use UrlShortener\Domain\Entity\Link;
 use UrlShortener\Domain\Repository\LinkRepositoryException;
 use UrlShortener\Domain\Repository\LinkRepositoryInterface;
+use UrlShortener\Infrastructure\Repository\Table;
 
 class PdoLinkRepository implements LinkRepositoryInterface
 {
@@ -24,7 +25,10 @@ class PdoLinkRepository implements LinkRepositoryInterface
 
     public function add(Link $link)
     {
-        $query = 'INSERT INTO links VALUES (?, ?, ?, ?)';
+        $query = sprintf(
+            'INSERT INTO %s VALUES (?, ?, ?, ?)',
+            Table::LINK
+        );
 
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(1, $link->uid());
@@ -36,7 +40,10 @@ class PdoLinkRepository implements LinkRepositoryInterface
 
     public function findByUrl($url)
     {
-        $query = 'SELECT * FROM links WHERE url = :url';
+        $query = sprintf(
+            'SELECT * FROM %s WHERE url = :url',
+            Table::LINK
+        );
 
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(':url', $url, PDO::PARAM_STR);
@@ -52,7 +59,10 @@ class PdoLinkRepository implements LinkRepositoryInterface
 
     public function findByCode($code)
     {
-        $query = 'SELECT * FROM links WHERE code = :code';
+        $query = sprintf(
+            'SELECT * FROM %s WHERE code = :code',
+            Table::LINK
+        );
 
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(':code', $code, PDO::PARAM_STR);
