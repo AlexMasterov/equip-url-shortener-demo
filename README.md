@@ -8,10 +8,10 @@
 ## Requirements
 To run this application, you will need:
 
- * [PHP 5.5+](https://secure.php.net/downloads.php)
+ * [PHP 7](https://secure.php.net/downloads.php)
  * [composer](https://getcomposer.org/)
- * [ext-pdo](http://php.net/manual/en/book.pdo.php)
- * [ext-pdo_sqlite](http://php.net/manual/en/ref.pdo-sqlite.php)
+ * [ext-pdo](https://secure.php.net/manual/en/book.pdo.php)
+ * [ext-pdo_sqlite](https://secure.php.net/manual/en/ref.pdo-sqlite.php)
  * [nodejs 6+](https://nodejs.org/en/download/current/)
 
 ## Installation

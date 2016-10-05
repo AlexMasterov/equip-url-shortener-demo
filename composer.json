@@ -3,13 +3,12 @@
   "description": "Demo of URL Shortener Service",
   "license": "MIT",
   "require": {
-    "php": "^5.5.9 || ^7.0",
+    "php": "^7.0",
     "ext-pdo": "*",
     "ext-pdo_sqlite": "*",
     "equip/framework": "dev-master#93aa4fa as 2.0",
     "zendframework/zend-diactoros": "^1.3",
     "josegonzalez/dotenv": "^2.0",
-    "paragonie/random_compat": "^2.0",
     "alexmasterov/equip-twig": "^2.0",
     "alexmasterov/twig-extension": "^0"
   },
