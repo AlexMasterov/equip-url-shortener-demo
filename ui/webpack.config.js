@@ -1,5 +1,3 @@
-const path = require('path');
-const webpack = require('webpack');
 const paths = require('./webpack/paths');
 
 let config = {
@@ -23,27 +21,23 @@ let config = {
     ]
   },
 
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      __DEV__: false
-    })
-  ],
-
   module: {
-    loaders: []
-  }
+    rules: []
+  },
+
+  plugins: []
 };
 
+// Modules
+config = require('./webpack/modules/babel-js')(config);
+config = require('./webpack/modules/sugar-css')(config);
+
 // Plugins
+config = require('./webpack/plugins/define')(config);
 config = require('./webpack/plugins/md5-hash')(config);
 config = require('./webpack/plugins/clean')(config);
 config = require('./webpack/plugins/assets')(config);
 config = require('./webpack/plugins/uglify')(config);
 config = require('./webpack/plugins/postcss')(config);
-
-// Modules
-config = require('./webpack/modules/babel-js')(config);
-config = require('./webpack/modules/sugar-css')(config);
 
 module.exports = config;

@@ -1,10 +1,11 @@
-const webpack = require('webpack');
+const DedupePlugin = require('webpack').optimize.DedupePlugin;
+const UglifyJsPlugin = require('webpack').optimize.UglifyJsPlugin;
 
 module.exports = (config) => {
   config.plugins = [
     ...config.plugins,
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin({
+    new DedupePlugin(),
+    new UglifyJsPlugin({
       mangle: true,
       comments: false,
       sourceMap: false,

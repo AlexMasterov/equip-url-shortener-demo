@@ -1,21 +1,27 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const paths = require('../paths');
 
-function json(options = {}) {
-  return JSON.stringify(options);
-}
+let cssLoader = {
+  loader: 'css',
+  query: {
+    modules: true,
+    importLoaders: 1,
+    localIdentName: '[hash:base64:5]'
+  }
+};
+
+let postcssLoader = {
+  loader: 'postcss',
+  query: {
+    parser: 'sugarss'
+  }
+};
 
 let extractTextLoader = ExtractTextPlugin.extract({
   fallbackLoader: 'style',
   loader: [
-    `css?${json({
-      modules: true,
-      importLoaders: 1,
-      localIdentName: '[hash:base64:5]'
-    })}`,
-    `postcss?${json({
-      parser: 'sugarss'
-    })}`
+    cssLoader,
+    postcssLoader
   ]
 });
 
@@ -33,8 +39,8 @@ module.exports = (config) => {
     })
   ];
 
-  config.module.loaders = [
-    ...config.module.loaders,
+  config.module.rules = [
+    ...config.module.rules,
     {
       test: /\.sss$/,
       include: paths.source,

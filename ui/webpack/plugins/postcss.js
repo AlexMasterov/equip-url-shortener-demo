@@ -1,4 +1,4 @@
-const webpack = require('webpack');
+const LoaderOptionsPlugin = require('webpack').LoaderOptionsPlugin;
 const paths = require('../paths');
 
 const postcssPlugins = [
@@ -27,7 +27,7 @@ const postcssPlugins = [
 module.exports = (config) => {
   config.plugins = [
     ...config.plugins,
-    new webpack.LoaderOptionsPlugin({
+    new LoaderOptionsPlugin({
       options: {
         context: paths.root,
         postcss: postcssPlugins

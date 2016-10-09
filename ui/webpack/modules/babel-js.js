@@ -6,13 +6,15 @@ module.exports = (config) => {
     '.js'
   ];
 
-  config.module.loaders = [
-    ...config.module.loaders,
+  config.module.rules = [
+    ...config.module.rules,
     {
       test: /\.js$/,
       include: paths.source,
-      loaders: 'babel',
-      query: require('./babel-preset.js')
+      use: [{
+        loader: 'babel',
+        query: require('./babel-preset.js')
+      }]
     }
   ];
 
