@@ -1,6 +1,6 @@
 <?php
 
-namespace UrlShortener\Application\Configuration;
+namespace UrlShortener\Infrastructure\Configuration;
 
 use AlexMasterov\TwigExtension\Psr7UriExtension;
 use Auryn\Injector;

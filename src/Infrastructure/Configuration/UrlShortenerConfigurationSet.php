@@ -1,15 +1,15 @@
 <?php
 
-namespace UrlShortener\Application\Configuration;
+namespace UrlShortener\Infrastructure\Configuration;
 
 use AlexMasterov\EquipTwig\Configuration\TwigResponderConfiguration;
 use Equip\Configuration\ConfigurationSet;
-use UrlShortener\Application\Configuration\BlackListConfiguration;
-use UrlShortener\Application\Configuration\EnvConfiguration;
-use UrlShortener\Application\Configuration\GeneratorConfiguration;
-use UrlShortener\Application\Configuration\LinkRepositoryConfiguration;
-use UrlShortener\Application\Configuration\PdoSqliteConfiguration;
-use UrlShortener\Application\Configuration\TwigConfiguration;
+use UrlShortener\Infrastructure\Configuration\BlackListConfiguration;
+use UrlShortener\Infrastructure\Configuration\EnvConfiguration;
+use UrlShortener\Infrastructure\Configuration\GeneratorConfiguration;
+use UrlShortener\Infrastructure\Configuration\LinkRepositoryConfiguration;
+use UrlShortener\Infrastructure\Configuration\PdoSqliteConfiguration;
+use UrlShortener\Infrastructure\Configuration\TwigConfiguration;
 
 class UrlShortenerConfigurationSet extends ConfigurationSet
 {

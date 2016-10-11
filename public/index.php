@@ -8,7 +8,7 @@ Equip\Application::build()
     Equip\Configuration\DiactorosConfiguration::class,
     Equip\Configuration\PayloadConfiguration::class,
     Equip\Configuration\RelayConfiguration::class,
-    UrlShortener\Application\Configuration\UrlShortenerConfigurationSet::class,
+    UrlShortener\Infrastructure\Configuration\UrlShortenerConfigurationSet::class,
 ])
 ->setMiddleware([
     Relay\Middleware\ResponseSender::class,

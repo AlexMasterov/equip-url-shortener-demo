@@ -1,6 +1,6 @@
 <?php
 
-namespace UrlShortener\Application\Configuration;
+namespace UrlShortener\Infrastructure\Configuration;
 
 use Auryn\Injector;
 use Equip\Configuration\ConfigurationInterface;
