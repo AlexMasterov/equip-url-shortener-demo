@@ -2,6 +2,9 @@ const paths = require('./webpack/paths');
 
 let config = {
   devtool: false,
+  performance: {
+    hints: false
+  },
 
   entry: {
     bundle: `${paths.source}/index.js`

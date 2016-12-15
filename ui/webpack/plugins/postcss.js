@@ -2,26 +2,8 @@ const LoaderOptionsPlugin = require('webpack').LoaderOptionsPlugin;
 const paths = require('../paths');
 
 const postcssPlugins = [
-  require('postcss-autoreset')({
-    reset: {
-      margin: 0,
-      padding: 0,
-      borderRadius: 0,
-      boxSizing: 'border-box'
-    }
-  }),
-  require('cssnano')({
-    safe: true,
-    autoprefixer: {
-      add: true,
-      remove: true,
-      cascade: false,
-      browsers: [
-        'last 2 versions',
-        'IE > 8'
-      ]
-    }
-  })
+  require('../postcss/autoreset')(),
+  require('../postcss/cssnano')()
 ];
 
 module.exports = (config) => {

@@ -1,29 +1,39 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const paths = require('../paths');
 
+let styleLoader = {
+  loader: 'style-loader'
+};
+
 let cssLoader = {
-  loader: 'css',
+  loader: 'css-loader',
   query: {
     modules: true,
-    importLoaders: 1,
+    importLoaders: true,
     localIdentName: '[hash:base64:5]'
   }
 };
 
 let postcssLoader = {
-  loader: 'postcss',
+  loader: 'postcss-loader',
   query: {
     parser: 'sugarss'
   }
 };
 
 let extractTextLoader = ExtractTextPlugin.extract({
-  fallbackLoader: 'style',
+  fallbackLoader: 'style-loader',
   loader: [
     cssLoader,
     postcssLoader
   ]
 });
+
+let sssLoader = {
+  loader: extractTextLoader,
+  test: /\.sss$/,
+  include: paths.source
+};
 
 module.exports = (config) => {
   config.resolve.extensions = [
@@ -41,11 +51,7 @@ module.exports = (config) => {
 
   config.module.rules = [
     ...config.module.rules,
-    {
-      test: /\.sss$/,
-      include: paths.source,
-      loader: extractTextLoader
-    }
+    sssLoader
   ];
 
   return config;
