@@ -1,21 +1,15 @@
 const CleanPlugin = require('clean-webpack-plugin');
-const paths = require('../paths');
 
-const cleanDirs = [
-  'js',
-  'css'
-];
-
-const pluginConfig = {
-  root: paths.assets,
-  verbose: false,
-  dry: false
-};
+const cleanDirs = ['css', 'js'];
 
 module.exports = (config) => {
   config.plugins = [
     ...config.plugins,
-    new CleanPlugin(cleanDirs, pluginConfig)
+    new CleanPlugin(cleanDirs, {
+      root: config.output.path,
+      verbose: false,
+      dry: false
+    })
   ];
 
   return config;

@@ -1,5 +1,3 @@
-const paths = require('../paths');
-
 module.exports = (config) => {
   config.resolve.extensions = [
     ...config.resolve.extensions,
@@ -9,12 +7,10 @@ module.exports = (config) => {
   config.module.rules = [
     ...config.module.rules,
     {
-      test: /\.js$/,
-      include: paths.source,
-      use: [{
-        loader: 'babel-loader',
-        query: require('./babel-preset.js')
-      }]
+      test: /\.js$/i,
+      include: config.context,
+      loader: 'babel-loader',
+      options: require('./babelPreset.js')(config)
     }
   ];
 

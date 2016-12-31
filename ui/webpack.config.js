@@ -1,46 +1,56 @@
-const paths = require('./webpack/paths');
+const { resolve } = require('path');
 
 let config = {
   devtool: false,
+  cache: true,
+
+  stats: {},
   performance: {
     hints: false
   },
 
+  context: resolve(__dirname, 'src'),
+
   entry: {
-    bundle: `${paths.source}/index.js`
+    bundle: [
+      './index.js'
+    ]
   },
 
   output: {
-    path: paths.dist,
-    filename: 'assets/js/[name]-[chunkhash:8].js',
-    publicPath: '/'
+    publicPath: '/assets/',
+    path: resolve(__dirname, '..', 'public', 'assets'),
+    filename: 'js/[name]-[chunkhash:8].js',
+    chunkFilename: '[name]-[chunkhash:8].js'
   },
 
   resolve: {
+    alias: {},
     extensions: [],
     modules: [
-      paths.source,
+      resolve(__dirname, 'src'),
       'node_modules'
     ]
   },
 
   module: {
-    rules: []
+    rules: [],
+    noParse: []
   },
 
   plugins: []
 };
 
 // Modules
-config = require('./webpack/modules/babel-js')(config);
-config = require('./webpack/modules/sugar-css')(config);
+config = require('./webpack/modules/babel')(config);
+config = require('./webpack/modules/sugar')(config);
+config = require('./webpack/modules/noParse')(config);
 
 // Plugins
 config = require('./webpack/plugins/define')(config);
-config = require('./webpack/plugins/md5-hash')(config);
-config = require('./webpack/plugins/clean')(config);
-config = require('./webpack/plugins/assets')(config);
+config = require('./webpack/plugins/md5Hash')(config);
 config = require('./webpack/plugins/uglify')(config);
-config = require('./webpack/plugins/postcss')(config);
+config = require('./webpack/plugins/assets')(config);
+config = require('./webpack/plugins/clean')(config);
 
 module.exports = config;

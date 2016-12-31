@@ -3,7 +3,8 @@ dist/
 build/
 node_modules/
 
-.cache
+*.lock
 *.log
-.agignore
+.*cache
+.ignore
 assets.json
