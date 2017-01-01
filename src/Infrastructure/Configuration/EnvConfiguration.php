@@ -9,21 +9,16 @@ use josegonzalez\Dotenv\Loader;
 
 class EnvConfiguration implements ConfigurationInterface
 {
+    const ENV_FILE = '.env';
+
     /**
      * @var string
      */
     private $rootDir;
 
-    /**
-     * @param string $rootDir
-     */
-    public function __construct($rootDir = null)
+    public function __construct(string $rootDir = null)
     {
-        if (null === $rootDir) {
-            $rootDir = dirname(dirname(dirname(__DIR__)));
-        }
-
-        $this->rootDir = $rootDir;
+        $this->rootDir = $rootDir ?? dirname(__DIR__, 3);
     }
 
     public function apply(Injector $injector)
@@ -33,51 +28,24 @@ class EnvConfiguration implements ConfigurationInterface
         $injector->prepare(Env::class, [$this, 'prepareEnv']);
     }
 
-    /**
-     * @param Env $env
-     *
-     * @return Env
-     */
-    public function prepareEnv(Env $env)
+    public function prepareEnv(Env $env): Env
     {
-        $loader = $this->loader();
+        $envFile = $this->rootDir . DIRECTORY_SEPARATOR . self::ENV_FILE;
 
-        $values = $loader
-            ->setFilters([
-                [$this, 'rootFilter']
-            ])
-            ->parse()
-            ->filter()
-            ->toArray()
-            ;
+        $values = $this->loader($envFile)->toArray();
 
         return $env->withValues($values);
     }
 
-    /**
-     * @return Loader
-     */
-    private function loader()
+    private function loader(string $envFile): Loader
     {
-        $rootDir = $this->rootDir;
-        $envFile = $rootDir . DIRECTORY_SEPARATOR . '.env';
+        $rootFilter = function (array $data) {
+            return str_replace('__ROOT__', $this->rootDir, $data);
+        };
 
-        return new Loader($envFile);
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return array
-     */
-    public function rootFilter(array $data)
-    {
-        $rootDir = $this->rootDir;
-
-        foreach ($data as $key => $value) {
-            $data[$key] = str_replace('__ROOT__', $rootDir, $value);
-        }
-
-        return $data;
+        return (new Loader($envFile))
+            ->setFilters([$rootFilter])
+            ->parse()
+            ->filter();
     }
 }
