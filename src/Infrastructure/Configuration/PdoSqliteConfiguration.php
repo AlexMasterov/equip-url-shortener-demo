@@ -12,47 +12,35 @@ class PdoSqliteConfiguration implements ConfigurationInterface
 {
     use EnvTrait;
 
+    private static $options = [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   => false,
+        PDO::ATTR_PERSISTENT         => true,
+    ];
+
     public function apply(Injector $injector)
     {
-        $env = $this->env;
-
-        list($database, $options) = $this->configFromEnv($env);
+        $dns = $this->dsn($this->env);
 
         $injector->define(PDO::class, [
-            ':dsn'     => "sqlite:{$database}",
-            ':options' => $options,
+            ':dsn'     => $dns,
+            ':options' => static::$options,
         ]);
     }
 
-    /**
-     * @param Env $env
-     *
-     * @return array
-     */
-    private function configFromEnv(Env $env)
+    private function dsn(Env $env): string
     {
         $database = $env->getValue('PDO_SQLITE_DATABASE', 'memory');
 
-        $options = [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false,
-        ];
-
         if ($this->isMemory($database)) {
             $database = ":{$database}:";
-            $options += [PDO::ATTR_PERSISTENT => true];
         }
 
-        return [$database, $options];
+        return "sqlite:{$database}";
     }
 
-    /**
-     * @param string $database
-     *
-     * @return bool
-     */
-    private function isMemory($database)
+    private function isMemory(string $database): bool
     {
         return strtolower($database) === 'memory';
     }
