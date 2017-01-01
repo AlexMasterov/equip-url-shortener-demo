@@ -6,6 +6,7 @@ use Auryn\Injector;
 use Equip\Configuration\ConfigurationInterface;
 use Equip\Configuration\EnvTrait;
 use Equip\Env;
+use RuntimeException;
 use UrlShortener\Domain\Generator\GeneratorInterface;
 use UrlShortener\Infrastructure\Generator\OpensslRandomBytesGenerator;
 use UrlShortener\Infrastructure\Generator\RandomBytesGenerator;
@@ -14,10 +15,7 @@ class GeneratorConfiguration implements ConfigurationInterface
 {
     use EnvTrait;
 
-    /**
-     * @var array
-     */
-    private $generators = [
+    private static $generators = [
         'random_bytes'         => RandomBytesGenerator::class,
         'openssl_random_bytes' => OpensslRandomBytesGenerator::class,
     ];
@@ -27,45 +25,36 @@ class GeneratorConfiguration implements ConfigurationInterface
         $env = $this->env;
 
         $generator = $this->generator($env);
+        $options = $this->options($env);
 
-        $entropy = $env->getValue('SHORT_URL_GENERATOR_ENTROPY', $generator::ENTROPY);
-        $length = $env->getValue('SHORT_URL_GENERATOR_LENGTH', $generator::LENGTH);
+        if (!empty($options)) {
+            $injector->define($generator, $options);
+        }
 
-        $injector->define($generator, [
-            ':entropy' => $entropy,
-            ':length' => $length
-        ]);
-
-        $injector->alias(
-            GeneratorInterface::class,
-            $generator
-        );
+        $injector->alias(GeneratorInterface::class, $generator);
     }
 
-    /**
-     * @param Env $env
-     *
-     * @return string
-     */
-    private function generator(Env $env)
+    private function generator(Env $env): string
     {
         $generator = $env->getValue('SHORT_URL_GENERATOR', 'random_bytes');
 
-        if ($this->hasGenerator($generator)) {
-            return $this->generators[$generator];
+        if (isset(static::$generators[$generator])) {
+            return static::$generators[$generator];
         }
 
-        return null;
+        throw new RuntimeException(sprintf(
+            'Generator `%s` could not be found and loaded.',
+            $generator
+        ));
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
-    private function hasGenerator($name)
+    private function options(Env $env): array
     {
-        return isset($this->generators[$name])
-            && is_subclass_of($this->generators[$name], GeneratorInterface::class);
+        $options = [
+            ':entropy' => $env->getValue('SHORT_URL_GENERATOR_ENTROPY'),
+            ':length' => $env->getValue('SHORT_URL_GENERATOR_LENGTH'),
+        ];
+
+        return array_filter($options);
     }
 }
