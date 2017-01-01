@@ -7,6 +7,7 @@ use Auryn\Injector;
 use Equip\Configuration\ConfigurationInterface;
 use Equip\Configuration\EnvTrait;
 use Equip\Env;
+use RuntimeException;
 use Twig_Environment;
 
 class TwigConfiguration implements ConfigurationInterface
@@ -18,18 +19,12 @@ class TwigConfiguration implements ConfigurationInterface
         $injector->prepare(Twig_Environment::class, [$this, 'prepareTwig']);
     }
 
-    /**
-     * @param Twig_Environment $twig
-     * @param Injector $injector
-     *
-     * @return Twig_Environment
-     */
     public function prepareTwig(
         Twig_Environment $twig,
         Injector $injector
-    ) {
-        $env = $this->env;
-        $assets = $this->assets($env);
+    ): Twig_Environment
+    {
+        $assets = $this->assets($this->env);
 
         $twig->addGlobal('assets', $assets);
         $twig->addExtension(
@@ -39,18 +34,14 @@ class TwigConfiguration implements ConfigurationInterface
         return $twig;
     }
 
-    /**
-     * @param Env $env
-     *
-     * @return object
-     */
     private function assets(Env $env)
     {
         $assetsPath = $env->getValue('TWIG_ASSETS_PATH', 'assets.json');
-        $assets = json_decode(
-            file_get_contents($assetsPath)
-        );
 
-        return $assets;
+        if (false === $assets = @file_get_contents($assetsPath)) {
+            throw new RuntimeException('Asserts could not be loaded.');
+        }
+
+        return json_decode($assets);
     }
 }
