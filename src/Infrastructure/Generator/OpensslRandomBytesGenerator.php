@@ -6,9 +6,6 @@ use UrlShortener\Domain\Generator\GeneratorInterface;
 
 final class OpensslRandomBytesGenerator implements GeneratorInterface
 {
-    const ENTROPY = 64;
-    const LENGTH = 3;
-
     /**
      * @var int
      */
@@ -19,22 +16,15 @@ final class OpensslRandomBytesGenerator implements GeneratorInterface
      */
     private $length;
 
-    /**
-     * @param int $entropy
-     * @param int $length
-     */
     public function __construct(
-        $entropy = self::ENTROPY,
-        $length = self::LENGTH
+        int $entropy = GeneratorInterface::ENTROPY,
+        int $length = GeneratorInterface::LENGTH
     ) {
         $this->entropy = $entropy;
         $this->length = $length;
     }
 
-    /**
-     * @return string
-     */
-    public function __invoke()
+    public function __invoke(): string
     {
         $bytes = openssl_random_pseudo_bytes($this->entropy);
         $value = rtrim(strtr(base64_encode($bytes), '+/', '-_'), '=');

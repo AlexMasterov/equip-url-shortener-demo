@@ -4,8 +4,8 @@ namespace UrlShortener\Domain\Generator;
 
 interface GeneratorInterface
 {
-    /**
-     * @return string
-     */
-    public function __invoke();
+    const ENTROPY = 64;
+    const LENGTH = 3;
+
+    public function __invoke(): string;
 }
